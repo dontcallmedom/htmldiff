@@ -340,13 +340,18 @@ function setOldDisplay() {
 
 	my $incomment = 0;
 	my $inhead = 1;
+        my $styleprinted = 0;
 	open(FILE, $filename) || die("File $filename cannot be opened: $!");
 	while (<FILE>) {
 		if ($inhead == 1) {
 			if (m/\<\/head/i) {
 				print HEADER $styles;
+                                $styleprinted = 1;
 			}
 			if (m/\<body/i) {
+                                if (!$styleprinted) {
+  				        print HEADER $styles;
+                                }
 				$inhead = 0;
 				print HEADER;
 				if ($opt_t) {
